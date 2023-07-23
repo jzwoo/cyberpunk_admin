@@ -7,7 +7,6 @@ import {Button} from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -20,6 +19,8 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {cn} from "@/lib/utils";
 import {className} from "postcss-selector-parser";
 import {adminLogin} from "@/services/api";
+import {useRouter} from 'next/navigation';
+import useAuth from "@/lib/useAuth";
 
 const formSchema = z.object({
     username: z.string().min(2),
@@ -27,6 +28,8 @@ const formSchema = z.object({
 })
 
 const Login: React.FC = () => {
+    const router = useRouter();
+    const {setAuth} = useAuth();
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -40,10 +43,13 @@ const Login: React.FC = () => {
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-
-        adminLogin({username: values.username, password: values.password}).then((res) => {
-            console.log(res.data);
+        adminLogin({username: values.username, password: values.password}, {withCredentials: true}).then((res) => {
+            if (res.status === 200) {
+                setAuth(res.data);
+                router.push('/dashboard');
+            }
+        }).catch(() => {
+            alert("Log in error");
         })
     }
 

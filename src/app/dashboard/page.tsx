@@ -1,8 +1,11 @@
 import React from "react";
+import RequireAuth from "@/lib/RequireAuth";
 
 const Dashboard: React.FC = () => {
     return (
-        <h1>dashboard</h1>
+        <RequireAuth>
+            <h1>dashboard</h1>
+        </RequireAuth>
     )
 }
 
