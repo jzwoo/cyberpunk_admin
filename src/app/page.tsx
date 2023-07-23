@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -20,6 +19,7 @@ import React from "react";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
 import {className} from "postcss-selector-parser";
+import {adminLogin} from "@/services/api";
 
 const formSchema = z.object({
     username: z.string().min(2),
@@ -36,11 +36,15 @@ const Login: React.FC = () => {
         },
     })
 
+    type form = { username: string, password: string }
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
         console.log(values)
+
+        adminLogin({username: values.username, password: values.password}).then((res) => {
+            console.log(res.data);
+        })
     }
 
     return (
@@ -50,10 +54,9 @@ const Login: React.FC = () => {
                     <CardTitle>Admin Login</CardTitle>
                 </CardHeader>
 
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}
-                              className="space-y-5 h-full flex flex-col justify-center">
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <CardContent className="space-y-5">
                             <FormField
                                 control={form.control}
                                 name="username"
@@ -86,13 +89,13 @@ const Login: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
-                        </form>
-                    </Form>
-                </CardContent>
+                        </CardContent>
 
-                <CardFooter>
-                    <Button className="mt-5 w-full" type="submit">LOGIN</Button>
-                </CardFooter>
+                        <CardFooter>
+                            <Button className="mt-5 w-full" type="submit">LOGIN</Button>
+                        </CardFooter>
+                    </form>
+                </Form>
             </Card>
         </div>
     )
