@@ -3,7 +3,7 @@
 import React, {createContext, useState} from "react";
 
 interface authentication {
-    user: APIv1.admin
+    user: APIv1.Admin
     accessToken: string
 }
 
