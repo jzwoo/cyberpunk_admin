@@ -1,6 +1,6 @@
 "use client"
 
-import useAuth from "@/lib/useAuth";
+import useAuth from "@/lib/hooks/useAuth";
 import React from "react";
 import {redirect} from "next/navigation";
 

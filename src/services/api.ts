@@ -17,3 +17,15 @@ export async function adminLogin(
         data
     })
 }
+
+export async function refresh(
+    options?: Record<string, any>
+): Promise<APIv1.APIv1Response<{ user: APIv1.admin, accessToken: string }>> {
+    return axiosAdmin.request({
+        url: "/api/v1/admin/refresh",
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+        withCredentials: true,
+        ...(options || {}),
+    })
+}

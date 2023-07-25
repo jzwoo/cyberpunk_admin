@@ -1,11 +1,16 @@
+"use client"
+
 import React from "react";
-import RequireAuth from "@/lib/RequireAuth";
+import RequireAuth from "@/components/RequireAuth";
+import PersistLogin from "@/components/PersistLogin";
 
 const Dashboard: React.FC = () => {
     return (
-        <RequireAuth>
-            <h1>dashboard</h1>
-        </RequireAuth>
+        <PersistLogin>
+            <RequireAuth>
+                <h1>dashboard</h1>
+            </RequireAuth>
+        </PersistLogin>
     )
 }
 

@@ -20,7 +20,7 @@ import {cn} from "@/lib/utils";
 import {className} from "postcss-selector-parser";
 import {adminLogin} from "@/services/api";
 import {useRouter} from 'next/navigation';
-import useAuth from "@/lib/useAuth";
+import useAuth from "@/lib/hooks/useAuth";
 
 const formSchema = z.object({
     username: z.string().min(2),
