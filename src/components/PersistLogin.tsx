@@ -11,14 +11,20 @@ const PersistLogin: React.FC = ({children}: { children?: React.ReactNode }) => {
 
     useEffect(() => {
         const verifyToken = async () => {
-            if (!auth.user.username) {
+            try {
                 await refresh();
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
             }
-
-            setLoading(false);
         }
 
-        verifyToken().then();
+        if (!auth.accessToken) {
+            verifyToken().then();
+        } else {
+            setLoading(false);
+        }
     }, []);
 
     if (loading) {

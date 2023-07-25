@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosAdmin = axios.create({
+export const axiosAdmin = axios.create({
     baseURL: 'http://localhost:8000',
     timeout: 10000,
 });
