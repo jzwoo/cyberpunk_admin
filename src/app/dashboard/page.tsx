@@ -20,6 +20,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import AddProductDialog from "@/components/AddProductDialog";
 
 const Dashboard: React.FC = () => {
     const adminLogout = useLogout();
@@ -126,7 +127,8 @@ const Dashboard: React.FC = () => {
         <PersistLogin>
             <RequireAuth>
                 <div className="flex justify-center items-center h-full">
-                    <div className="flex flex-col gap-10">
+                    <div className="flex flex-col gap-8">
+                        <AddProductDialog/>
 
                         <DataTable data={products} columns={columns}/>
 
