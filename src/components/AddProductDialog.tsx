@@ -11,6 +11,10 @@ import * as z from "zod";
 import {Dialog, DialogTrigger} from "@radix-ui/react-dialog";
 import useAxiosAdminPrivate from "@/lib/hooks/useAxiosAdminPrivate";
 
+interface AddProductDialogProp {
+    setProducts: (value: (((prevState: APIv1.Product[]) => APIv1.Product[]) | APIv1.Product[])) => void
+}
+
 const formSchema = z.object({
     name: z.string().min(1),
     description: z.string().min(1),
@@ -46,9 +50,11 @@ const defaultValues: FormData = {
     disabled: false
 }
 
-const AddProductDialog: React.FC = () => {
-    const [open, setOpen] = useState(false);
+const AddProductDialog: React.FC<AddProductDialogProp> = (props) => {
+    const {setProducts} = props;
     const axiosAdminPrivate = useAxiosAdminPrivate();
+
+    const [open, setOpen] = useState(false);
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -58,6 +64,7 @@ const AddProductDialog: React.FC = () => {
     const onSubmit = (values: FormData) => {
         axiosAdminPrivate.post("/api/v1/products", values, {withCredentials: true}).then((res) => {
             console.log(res);
+            setProducts(currentProducts => [...currentProducts, res.data])
             setOpen(false);
         }).catch((err) => {
             alert(`Error: ${err}`);

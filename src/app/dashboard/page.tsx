@@ -139,7 +139,7 @@ const Dashboard: React.FC = () => {
             <RequireAuth>
                 <div className="flex justify-center items-center h-full">
                     <div className="flex flex-col gap-8">
-                        <AddProductDialog/>
+                        <AddProductDialog setProducts={setProducts}/>
 
                         <DataTable data={products} columns={columns}/>
 
