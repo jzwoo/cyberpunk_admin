@@ -1,7 +1,8 @@
 import React from "react";
-import {ColumnDef, getCoreRowModel} from "@tanstack/table-core";
+import {ColumnDef, getCoreRowModel, getPaginationRowModel} from "@tanstack/table-core";
 import {flexRender, useReactTable} from "@tanstack/react-table";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Button} from "@/components/ui/button";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -15,6 +16,7 @@ const DataTable: React.FC<DataTableProps<any, any>> = (props) => {
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
     })
 
     return (
@@ -61,8 +63,27 @@ const DataTable: React.FC<DataTableProps<any, any>> = (props) => {
                         </TableRow>
                     )}
                 </TableBody>
-
             </Table>
+
+            <div className="flex items-center justify-end space-x-2 p-4">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                >
+                    Previous
+                </Button>
+
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                >
+                    Next
+                </Button>
+            </div>
         </div>
     )
 }

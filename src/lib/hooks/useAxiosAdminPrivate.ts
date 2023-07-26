@@ -1,10 +1,10 @@
 import useRefreshToken from "@/lib/hooks/useRefreshToken";
 import useAuth from "@/lib/hooks/useAuth";
 import {useEffect} from "react";
-import {axiosAdmin, refresh} from "@/services/api";
+import {axiosAdmin} from "@/services/api";
 
 const useAxiosAdminPrivate = () => {
-    const accessToken = useRefreshToken();
+    const refresh = useRefreshToken();
     const {auth} = useAuth();
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const useAxiosAdminPrivate = () => {
         const responseIntercept = axiosAdmin.interceptors.response.use(response => response,
             async (err) => {
                 const prevRequest = err?.config;
-                if (err?.response?.status === 403 && !prevRequest?.sent) {
+                if (err?.response?.status === 401 && !prevRequest?.sent) {
                     prevRequest.sent = true;
                     const newAccessToken = await refresh();
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -33,7 +33,7 @@ const useAxiosAdminPrivate = () => {
             axiosAdmin.interceptors.request.eject(requestIntercept);
             axiosAdmin.interceptors.response.eject(responseIntercept);
         }
-    }, [auth, accessToken]);
+    }, [auth, refresh]);
 
     return axiosAdmin;
 }

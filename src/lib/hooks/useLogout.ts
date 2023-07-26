@@ -6,9 +6,8 @@ const useLogout = () => {
     const axiosAdminPrivate = useAxiosAdminPrivate();
 
     return async () => {
-        axiosAdminPrivate.post("/api/v1/admin/logout", {}, {withCredentials: true}).then(() => {
-            setAuth({user: {username: "", role: ""}, accessToken: ""});
-        })
+        axiosAdminPrivate.post("/api/v1/admin/logout", {}, {withCredentials: true}).then();
+        setAuth({user: {username: "", role: ""}, accessToken: ""});
     }
 }
 

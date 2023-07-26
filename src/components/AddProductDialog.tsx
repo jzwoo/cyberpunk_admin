@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -9,6 +9,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {Dialog, DialogTrigger} from "@radix-ui/react-dialog";
+import useAxiosAdminPrivate from "@/lib/hooks/useAxiosAdminPrivate";
 
 const formSchema = z.object({
     name: z.string().min(1),
@@ -46,17 +47,25 @@ const defaultValues: FormData = {
 }
 
 const AddProductDialog: React.FC = () => {
+    const [open, setOpen] = useState(false);
+    const axiosAdminPrivate = useAxiosAdminPrivate();
+
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues,
     })
 
     const onSubmit = (values: FormData) => {
-        console.log(values);
+        axiosAdminPrivate.post("/api/v1/products", values, {withCredentials: true}).then((res) => {
+            console.log(res);
+            setOpen(false);
+        }).catch((err) => {
+            alert(`Error: ${err}`);
+        })
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className="w-20">
                     ADD
