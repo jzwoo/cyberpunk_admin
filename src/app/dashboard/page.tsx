@@ -21,9 +21,11 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import AddProductDialog from "@/components/AddProductDialog";
+import useAxiosAdminPrivate from "@/lib/hooks/useAxiosAdminPrivate";
 
 const Dashboard: React.FC = () => {
     const adminLogout = useLogout();
+    const axiosAdminPrivate = useAxiosAdminPrivate();
 
     const [products, setProducts] = useState<APIv1.Product[]>([]);
 
@@ -39,6 +41,15 @@ const Dashboard: React.FC = () => {
             cancel = true
         };
     }, []);
+
+    const handleDeleteProduct = (productId: string) => {
+        axiosAdminPrivate.delete(`/api/v1/products/${productId}`, {withCredentials: true}).then((res) => {
+            const filteredProducts = products.filter((product) => product._id != productId);
+            setProducts(filteredProducts);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
 
     const columns: ColumnDef<APIv1.Product>[] = [
         {
@@ -83,7 +94,7 @@ const Dashboard: React.FC = () => {
                                     Actions
                                 </DropdownMenuLabel>
 
-                                <DropdownMenuItem onClick={() => console.log(product._id)}>
+                                <DropdownMenuItem>
                                     Edit product
                                 </DropdownMenuItem>
 
@@ -112,7 +123,7 @@ const Dashboard: React.FC = () => {
                                     Cancel
                                 </AlertDialogCancel>
 
-                                <AlertDialogAction>
+                                <AlertDialogAction onClick={() => handleDeleteProduct(product._id)}>
                                     Continue
                                 </AlertDialogAction>
                             </AlertDialogFooter>
