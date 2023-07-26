@@ -71,51 +71,52 @@ const Dashboard: React.FC = () => {
                 const product = row.original
 
                 return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger>
-                            <MoreHorizontal className="h-4 w-4"/>
-                        </DropdownMenuTrigger>
+                    <AlertDialog>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <MoreHorizontal className="h-4 w-4"/>
+                            </DropdownMenuTrigger>
 
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>
-                                Actions
-                            </DropdownMenuLabel>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>
+                                    Actions
+                                </DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => console.log(product._id)}>
-                                Edit product
-                            </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => console.log(product._id)}>
+                                    Edit product
+                                </DropdownMenuItem>
 
-                            <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                    <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
+                                    <DropdownMenuItem>
                                         Delete product
                                     </DropdownMenuItem>
                                 </AlertDialogTrigger>
 
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>
-                                            Confirm the deletion of product?
-                                        </AlertDialogTitle>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
 
-                                        <AlertDialogDescription>
-                                            This action cannot be undone.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Confirm the deletion of product?
+                                </AlertDialogTitle>
 
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                            Cancel
-                                        </AlertDialogCancel>
+                                <AlertDialogDescription>
+                                    This action cannot be undone.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
 
-                                        <AlertDialogAction>
-                                            Continue
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>
+                                    Cancel
+                                </AlertDialogCancel>
+
+                                <AlertDialogAction>
+                                    Continue
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 )
             }
         },
