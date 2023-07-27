@@ -21,6 +21,7 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import AddProductDialog from "@/components/AddProductDialog";
+import UpdateProductDialog from "@/components/UpdateProductDialog";
 import useAxiosAdminPrivate from "@/lib/hooks/useAxiosAdminPrivate";
 
 const Dashboard: React.FC = () => {
@@ -28,6 +29,9 @@ const Dashboard: React.FC = () => {
     const axiosAdminPrivate = useAxiosAdminPrivate();
 
     const [products, setProducts] = useState<APIv1.Product[]>([]);
+
+    const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+    const [productToUpdate, setToUpdateProduct] = useState<APIv1.Product | undefined>(undefined);
 
     useEffect(() => {
         let cancel = false;
@@ -94,7 +98,10 @@ const Dashboard: React.FC = () => {
                                     Actions
                                 </DropdownMenuLabel>
 
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {
+                                    setToUpdateProduct(product);
+                                    setOpenUpdateDialog(true);
+                                }}>
                                     Edit product
                                 </DropdownMenuItem>
 
@@ -139,6 +146,10 @@ const Dashboard: React.FC = () => {
             <RequireAuth>
                 <div className="flex justify-center items-center h-full">
                     <div className="flex flex-col gap-8">
+                        {openUpdateDialog && productToUpdate &&
+                            <UpdateProductDialog setOpen={setOpenUpdateDialog}
+                                                 to_update={productToUpdate} setProducts={setProducts}/>}
+
                         <AddProductDialog setProducts={setProducts}/>
 
                         <DataTable data={products} columns={columns}/>
