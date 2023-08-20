@@ -2,7 +2,11 @@ import axios from 'axios';
 
 export const axiosAdmin = axios.create({
     baseURL: 'http://localhost:8000',
-    timeout: 10000,
+});
+
+export const axiosAdmin2 = axios.create({
+    baseURL: 'http://localhost:8000',
+    withCredentials: true,
 });
 
 export async function adminLogin(
@@ -25,7 +29,6 @@ export async function refresh(
         url: "/api/v1/admin/refresh",
         method: "GET",
         headers: {"Content-Type": "application/json"},
-        withCredentials: true,
         ...(options || {}),
     })
 }

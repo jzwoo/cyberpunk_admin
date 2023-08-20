@@ -20,7 +20,7 @@ const PersistLogin: React.FC = ({children}: { children?: React.ReactNode }) => {
             }
         }
 
-        if (!auth.accessToken) {
+        if (!auth?.accessToken) {
             verifyToken().then();
         } else {
             setLoading(false);

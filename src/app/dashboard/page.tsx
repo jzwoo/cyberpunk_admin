@@ -6,7 +6,7 @@ import PersistLogin from "@/components/PersistLogin";
 import {Button} from "@/components/ui/button";
 import useLogout from "@/lib/hooks/useLogout";
 import DataTable from "@/components/DataTable";
-import {getAllProducts} from "@/services/api";
+import {axiosAdmin, getAllProducts} from "@/services/api";
 import {ColumnDef} from "@tanstack/table-core";
 import {DropdownMenu, DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu";
 import {MoreHorizontal} from "lucide-react";
@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
     }, []);
 
     const handleDeleteProduct = (productId: string) => {
-        axiosAdminPrivate.delete(`/api/v1/products/${productId}`, {withCredentials: true}).then((res) => {
+        axiosAdminPrivate.delete(`/api/v1/products/${productId}`).then((res) => {
             const filteredProducts = products.filter((product) => product._id != productId);
             setProducts(filteredProducts);
         }).catch((err) => {

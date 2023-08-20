@@ -10,6 +10,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {Dialog} from "@radix-ui/react-dialog";
 import useAxiosAdminPrivate from "@/lib/hooks/useAxiosAdminPrivate";
+import {useRouter} from 'next/navigation';
 
 interface UpdateProductDialog {
     to_update: APIv1.Product
@@ -42,6 +43,7 @@ type FormData = z.infer<typeof formSchema>;
 
 const UpdateProductDialog: React.FC<UpdateProductDialog> = (props) => {
     const {to_update, setOpen, setProducts} = props;
+    const router = useRouter();
     const axiosAdminPrivate = useAxiosAdminPrivate();
 
     const defaultValues = {
@@ -59,14 +61,17 @@ const UpdateProductDialog: React.FC<UpdateProductDialog> = (props) => {
     })
 
     const onSubmit = (values: FormData) => {
-        axiosAdminPrivate.put(`/api/v1/products/${to_update._id}`, values, {withCredentials: true}).then((res) => {
+        axiosAdminPrivate.put(`/api/v1/products/${to_update._id}`, values).then((res) => {
             const updatedProduct: APIv1.Product = res.data;
 
             setProducts((currentProducts) =>
                 currentProducts.map((product) => product._id === updatedProduct._id ? updatedProduct : product));
             setOpen(false);
         }).catch((err) => {
-            alert(`Error when updating product: ${err}`);
+            console.log(err)
+            throw err;
+            // alert(`Error when updating product: ${err}`);
+            // router.push('/');
         })
     }
 
